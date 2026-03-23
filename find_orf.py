@@ -121,7 +121,7 @@ def vet_codon(codon):
     # Change `codon_pattern_str` so that it will match any valid codons, and
     # only valid codons.
     # Read the docstring above for additional clues.
-    codon_pattern_str = r'AUG'
+    codon_pattern_str = r'^[AUGCaugc]{3}$'
     ##########################################################################
 
     codon_pattern = re.compile(codon_pattern_str)
@@ -190,7 +190,7 @@ def find_first_orf(sequence,
 
     # Get copies of everything in uppercase
     seq = sequence.upper()
-    starts = [c.upper() for c in start_codons]
+    start = [c.upper() for c in start_codons]
     stops = [c.upper() for c in stop_codons]
     # Make sure seq is RNA
     seq = seq.replace('T', 'U')
@@ -209,7 +209,14 @@ def find_first_orf(sequence,
     # exactly. Change `orf_pattern_str` so that it will match any open reading
     # frame.
     # Read the docstring above for additional clues.
-    orf_pattern_str = r'AUGGUAUAA'
+    stop_options = "|".join(stops)
+    start_options = "|".join(start)
+    orf_pattern_str = r'(' + start_options + ')([AUGC]{3})*(' + stop_options + ')'
+    # (AUG) -- (zero or more codons) -- (UAA or UAG or UGA)
+    # - () are groups
+    # - | = or --> (UGA|UAU|UAG)
+       # start_codons = ['AUG'],
+       # stop_codons = ['UAA', 'UAG', 'UGA']):
     ##########################################################################
 
     # Create the regular expression object
