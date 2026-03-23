@@ -93,7 +93,7 @@ def get_complement(sequence):
     >>> get_complement('AUGC')
     'UACG'
     """
-    complement_sequence_dic = ["A" : "U", "U": "A", "G": "C", "C": "G"]
+    complement_sequence_dic = ["A":"U", "U": "A", "G": "C", "C": "G"]
     sequence_complement = list(sequence.complement_sequence_dic())
     return sequence_complement
 
